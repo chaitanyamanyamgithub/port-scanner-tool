@@ -8,7 +8,7 @@ A comprehensive network security tool featuring both desktop GUI and web demo ve
 ![Web Demo](https://img.shields.io/badge/Demo-Live%20Web%20App-brightgreen.svg)
 
 ## 🌟 **Live Web Demo**
-**🔗 [Try the Live Demo](https://port-scanner-tool-1.onrender.com)** *(Deploy using instructions below)*
+**🔗 [Try the Live Demo](https://port-scanner-tool-1.onrender.com)** 
 
 ## 📦 **Two Versions Available**
 
