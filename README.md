@@ -1,235 +1,225 @@
-# 🔍 Port Scanner Tool
+# 🔍 Advanced Port Scanner Tool
 
-A powerful, user-friendly port scanning tool with a modern graphical interface built in Python. Perfect for network administrators, security professionals, and anyone who needs to scan network ports efficiently.
+A comprehensive network security tool featuring both desktop GUI and web demo versions. Perfect for network administrators, security professionals, and educational purposes.
 
-![Python](https://img.shields.io/badge/Python-3.6+-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Web Demo](https://img.shields.io/badge/Demo-Live%20Web%20App-brightgreen.svg)
 
-## ✨ Features
+## 🌟 **Live Web Demo**
+**🔗 [Try the Live Demo](https://port-scanner-demo.onrender.com)** *(Deploy using instructions below)*
 
-- 🖥️ **Modern GUI Interface**: Clean, intuitive interface built with tkinter
-- ⚡ **Multi-threaded Scanning**: Fast, concurrent port scanning with configurable thread pools
-- 🎯 **Flexible Targeting**: Supports both IP addresses and hostnames
-- 📊 **Real-time Progress**: Live progress tracking with status updates
-- 🔍 **Service Detection**: Automatically identifies common services running on open ports
-- 💾 **Export Results**: Save scan results to CSV format for analysis
-- ⚙️ **Configurable Settings**: Adjustable timeout, thread count, and port ranges
-- 🛡️ **Error Handling**: Robust error handling with user-friendly messages
+## 📦 **Two Versions Available**
 
-## 🚀 Quick Start
+### 🖥️ **Desktop Version** (`advanced_scanner.py`)
+Full-featured GUI application with complete port scanning capabilities.
 
-### Requirements
-- Python 3.6 or higher
-- No external dependencies (uses only standard library)
+### 🌐 **Web Demo Version** (`web_app.py`)
+Safe, cloud-deployable demonstration version for online showcase.
 
-### Installation
-1. Download or clone this repository
-2. Navigate to the project directory
-3. Run the scanner:
+## ✨ **Desktop Features**
 
+- 🖥️ **Modern GUI Interface**: Professional tkinter-based interface
+- ⚡ **Multi-threaded Scanning**: Fast, concurrent port scanning (configurable threads)
+- 🎯 **Flexible Targeting**: IP addresses, hostnames, and network ranges
+- 🔍 **Advanced Scanning**: TCP/UDP protocols with stealth mode
+- 🏷️ **Banner Grabbing**: Service version detection and identification
+- 🌐 **Network Discovery**: Live host discovery with CIDR support
+- 📊 **Real-time Visualization**: Live charts and progress tracking
+- 📋 **Scan History**: SQLite database with search and filtering
+- 💾 **Multiple Export Formats**: CSV, JSON, and styled HTML reports
+- ⚙️ **Professional Features**: Preferences, database manager, help system
+- 🛡️ **Security Focused**: Ethical guidelines and responsible use features
+
+## 🌐 **Web Demo Features**
+
+- 🔒 **Cloud-Safe**: Compliant with platform security policies
+- 🎨 **Modern UI**: Responsive design with gradient styling
+- 📱 **Mobile Friendly**: Works on all devices
+- 🔍 **Service Checking**: Test common ports on predefined targets
+- ⚡ **Quick Scan**: Automated scanning of popular services
+- 📊 **Real-time Results**: Live updates with response times
+- 🛡️ **Educational**: Safe demonstration of networking concepts
+
+## 🚀 **Quick Start**
+
+### Desktop Version
 ```bash
+# Run the advanced GUI version
+python advanced_scanner.py
+
+# Or run the basic version
 python scanner.py
 ```
 
-## 📋 Usage Guide
+### Web Demo Version
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-### Basic Scanning
-1. **Enter Target**: Input an IP address (e.g., `192.168.1.1`) or hostname (e.g., `google.com`)
-2. **Set Port Range**: Define start and end ports (default: 1-1000)
-3. **Configure Settings**: Adjust timeout and thread count if needed
-4. **Start Scan**: Click "Start Scan" to begin
-5. **View Results**: Monitor progress and view open ports in real-time
+# Run web application
+python web_app.py
 
-### GUI Components
-
-| Component | Description | Default Value |
-|-----------|-------------|---------------|
-| **Target Host/IP** | Target to scan (IP or hostname) | `127.0.0.1` |
-| **Port Range** | Start and end port numbers | `1` to `1000` |
-| **Timeout** | Connection timeout in seconds | `1` second |
-| **Thread Count** | Number of concurrent threads | `100` threads |
-
-### Buttons
-- **Start Scan**: Begin port scanning
-- **Stop Scan**: Interrupt ongoing scan
-- **Save Results**: Export results to CSV file
-- **Clear Results**: Clear current scan results
-
-## 📊 Sample Output
-
-The tool displays results in a table format:
-
-| Port | State | Service | Timestamp |
-|------|-------|---------|-----------|
-| 22 | Open | SSH | 2025-07-08 14:30:15 |
-| 80 | Open | HTTP | 2025-07-08 14:30:16 |
-| 443 | Open | HTTPS | 2025-07-08 14:30:17 |
-
-Results are automatically saved to `results.csv` for further analysis.
-
-## 🎯 Common Use Cases
-
-### Local Network Scanning
-```
-Target: 192.168.1.1
-Port Range: 1-1000
-Timeout: 1
-Threads: 100
+# Access at: http://localhost:5000
 ```
 
-### Web Server Check
-```
-Target: example.com
-Port Range: 80,443
-Timeout: 2
-Threads: 50
-```
+## 🌐 **Deploy Web Demo to Cloud**
 
-### Comprehensive Scan
-```
-Target: target.com
-Port Range: 1-65535
-Timeout: 1
-Threads: 200
-```
+### Option 1: Render.com (Recommended)
+1. Fork this repository
+2. Go to [render.com](https://render.com) and create account
+3. Click "New +" → "Web Service"
+4. Connect your GitHub repository
+5. Use these settings:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `python web_app.py`
+   - **Plan:** Free
+6. Deploy and get your live link!
 
-## 🔧 Configuration Tips
+### Option 2: Railway.app
+1. Go to [railway.app](https://railway.app)
+2. Connect GitHub repository
+3. Deploy automatically
+4. Get your live demo link
 
-### Performance Optimization
-- **Higher Thread Count**: Faster scanning but may trigger firewalls
-- **Lower Timeout**: Quicker scans but may miss slow services
-- **Smaller Port Ranges**: Faster results for targeted scanning
+## 📋 **Usage Guide**
 
-### Network Considerations
-- Local scans are significantly faster than internet scans
-- Some firewalls may block or rate-limit port scanning
-- Use lower thread counts for external targets
+### Desktop Application
+1. **Target Input**: Enter IP address, hostname, or network range
+2. **Port Configuration**: Set individual ports, ranges, or comma-separated lists
+3. **Advanced Options**: Choose TCP/UDP, enable banner grabbing, stealth mode
+4. **Network Discovery**: Discover live hosts on networks (CIDR notation)
+5. **View Results**: Real-time scanning with professional results table
+6. **Export Data**: Save as CSV, JSON, or generate HTML reports
+7. **History Management**: View past scans, statistics, and manage database
 
-## 🛡️ Security & Ethics
+### Web Demo
+1. **Select Target**: Choose from safe demo targets (google.com, github.com, etc.)
+2. **Choose Port**: Pick common service ports (HTTP, HTTPS, SSH, etc.)
+3. **Single Check**: Test individual port connectivity
+4. **Quick Scan**: Automatically test multiple common ports
+5. **View Results**: See real-time results with response times
 
-### ⚠️ Important Notice
-This tool is intended for:
-- ✅ Testing your own systems and networks
-- ✅ Educational and learning purposes
-- ✅ Authorized security assessments
-- ✅ Network troubleshooting and administration
+## 🔧 **Requirements**
 
-### 🚫 Do NOT use for:
-- ❌ Unauthorized scanning of systems you don't own
-- ❌ Malicious activities or attacks
-- ❌ Violating terms of service or laws
+### Desktop Version
+- Python 3.9+
+- No external dependencies (uses standard library)
+- Optional: matplotlib for visualization charts
 
-**Always ensure you have explicit permission before scanning any system.**
+### Web Demo Version
+- Python 3.9+
+- Flask 2.3.3+
+- Standard library modules
 
-## 🔍 Detected Services
+## 📊 **Screenshots & Demo**
 
-The tool automatically identifies common services:
+### Desktop Interface
+- Modern GUI with tabbed interface
+- Real-time progress tracking
+- Professional results display
+- Advanced scanning options
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 21 | FTP | File Transfer Protocol |
-| 22 | SSH | Secure Shell |
-| 23 | Telnet | Telnet Protocol |
-| 25 | SMTP | Simple Mail Transfer Protocol |
-| 53 | DNS | Domain Name System |
-| 80 | HTTP | Hypertext Transfer Protocol |
-| 110 | POP3 | Post Office Protocol v3 |
-| 143 | IMAP | Internet Message Access Protocol |
-| 443 | HTTPS | HTTP over TLS/SSL |
-| 993 | IMAPS | IMAP over TLS/SSL |
-| 995 | POP3S | POP3 over TLS/SSL |
-| 3306 | MySQL | MySQL Database |
-| 3389 | RDP | Remote Desktop Protocol |
-| 5432 | PostgreSQL | PostgreSQL Database |
+### Web Interface
+- Responsive design with gradients
+- Mobile-friendly layout
+- Real-time scanning results
+- Professional styling
 
-## 🐛 Troubleshooting
+## 🛡️ **Security & Ethics**
 
-### Common Issues
+### Important Notes
+- ⚠️ **Authorization Required**: Only scan networks you own or have explicit permission to test
+- 🔒 **Responsible Use**: Follow ethical hacking guidelines and legal requirements
+- 📚 **Educational Purpose**: Designed for learning and authorized security testing
+- 🚫 **No Malicious Use**: Not intended for unauthorized access or malicious activities
 
-**"Permission denied" errors**
-- Windows: Run as Administrator
-- Linux/macOS: Use `sudo python scanner.py`
+### Web Demo Safety
+- 🔒 **Limited Scope**: Only predefined safe targets allowed
+- 🛡️ **Rate Limited**: Prevents abuse and ensures compliance
+- ✅ **Platform Compliant**: Meets cloud provider security requirements
+- 📚 **Educational Focus**: Demonstrates concepts safely
 
-**Slow scanning performance**
-- Reduce thread count (try 50-100)
-- Increase timeout for slower networks
-- Scan smaller port ranges
-
-**No results found**
-- Check firewall settings
-- Verify network connectivity
-- Try scanning localhost (127.0.0.1) first
-
-**Hostname resolution fails**
-- Use IP address instead of hostname
-- Check DNS settings
-- Verify internet connection
-
-### Error Messages
-- **"Could not resolve hostname"**: DNS resolution failed
-- **"Input Error"**: Invalid port range or settings
-- **"Scan Error"**: Network connectivity issues
-
-## 📁 File Structure
+## 🏗️ **Project Structure**
 
 ```
 PortScannerTool/
-├── scanner.py       # Main application file
-├── README.md        # This documentation
-└── results.csv      # Generated after scan (auto-created)
+├── advanced_scanner.py    # 🎯 Full-featured desktop application
+├── scanner.py             # 🔧 Basic scanner version
+├── web_app.py             # 🌐 Web demo application
+├── templates/
+│   └── index.html         # 🎨 Web interface
+├── requirements.txt       # 📦 Dependencies
+├── render.yaml           # ⚙️ Render deployment config
+├── runtime.txt           # 🐍 Python version
+├── DEPLOYMENT.md         # 🚀 Deployment guide
+└── README.md             # 📖 This file
 ```
 
-## 🔧 Technical Details
+## 🎯 **Use Cases**
 
-- **Language**: Python 3.6+
-- **GUI Framework**: tkinter (included with Python)
-- **Threading**: `concurrent.futures.ThreadPoolExecutor`
-- **Networking**: Standard `socket` library
-- **File Format**: CSV (Comma-Separated Values)
+### Professional
+- **Penetration Testing**: Authorized security assessments
+- **Network Auditing**: Infrastructure security reviews
+- **Compliance Checking**: Verify security standards
+- **Incident Response**: Network reconnaissance during investigations
 
-## 📝 CSV Output Format
+### Educational
+- **Cybersecurity Training**: Hands-on learning tool
+- **Network Administration**: Understanding network services
+- **Portfolio Development**: Demonstrate technical skills
+- **Interview Preparation**: Showcase networking knowledge
 
-```csv
-Port,State,Service,Timestamp
-22,Open,SSH,2025-07-08 14:30:15
-80,Open,HTTP,2025-07-08 14:30:16
-443,Open,HTTPS,2025-07-08 14:30:17
+## 🔧 **Advanced Features**
+
+### Desktop Exclusive
+- Raw socket operations
+- Custom timeout configurations
+- Unlimited target ranges
+- Full network discovery
+- Advanced stealth techniques
+- Complete scan history database
+- Professional reporting system
+
+### Web Demo Benefits
+- No installation required
+- Cross-platform compatibility
+- Easy sharing and demonstration
+- Portfolio showcase capability
+- Educational accessibility
+
+## 📝 **Contributing**
+
+Contributions welcome! Please feel free to submit issues, feature requests, or pull requests.
+
+### Development Setup
+```bash
+git clone https://github.com/chaitanyamanyamgithub/port-scanner-tool.git
+cd port-scanner-tool
+pip install -r requirements.txt
+python advanced_scanner.py  # Desktop version
+python web_app.py           # Web version
 ```
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to:
-- Report bugs
-- Suggest new features
-- Submit pull requests
-- Improve documentation
-
-## 📄 License
+## 📄 **License**
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆘 Support
+## ⚠️ **Disclaimer**
 
-If you encounter any issues or have questions:
-1. Check the troubleshooting section above
-2. Review the error messages for clues
-3. Ensure you're using Python 3.6+
-4. Verify network connectivity
-
-## 🎯 Future Enhancements
-
-Potential improvements for future versions:
-- [ ] UDP port scanning support
-- [ ] OS detection capabilities
-- [ ] Custom service definitions
-- [ ] Scan scheduling
-- [ ] Network range scanning
-- [ ] Export to multiple formats (JSON, XML)
-- [ ] Advanced filtering options
+This tool is for educational and authorized testing purposes only. Users are responsible for complying with all applicable laws and regulations. The authors are not responsible for any misuse of this software.
 
 ---
 
-**⚡ Ready to scan? Run `python scanner.py` and start exploring your network!**
+## 🌟 **Why This Project?**
 
-**⚠️ Remember: Use responsibly and only scan systems you own or have permission to test.**
+This project demonstrates:
+- **Network Programming**: Socket operations and protocol understanding
+- **GUI Development**: Professional desktop application design
+- **Web Development**: Modern responsive web applications
+- **Cloud Deployment**: Platform-as-a-Service deployment skills
+- **Security Awareness**: Ethical hacking and responsible disclosure
+- **Software Engineering**: Clean code, documentation, and project structure
+
+Perfect for portfolios, interviews, and demonstrating full-stack development capabilities! 🚀
