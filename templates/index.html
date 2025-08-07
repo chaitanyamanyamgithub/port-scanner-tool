@@ -3,263 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>�️ Advanced Port Scanner - Network Security Tool</title>
+    <title>🔍 Port Scanner Tool</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-
+        
         .header {
             background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
-
+        
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-
+        
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
         }
-
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+            color: #856404;
+        }
+        
         .main-content {
-            padding: 40px;
-        }
-
-        .scan-form {
-            background: #f8f9fa;
             padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 2px solid #e9ecef;
         }
-
+        
+        .scan-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
         .form-group {
             margin-bottom: 20px;
         }
-
-        .form-group label {
+        
+        label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #333;
-            font-size: 1.1em;
         }
-
-        .form-control {
+        
+        select, input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s;
         }
-
-        .form-control:focus {
+        
+        select:focus, input:focus {
             outline: none;
             border-color: #4CAF50;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
         }
-
-        .btn {
-            padding: 12px 30px;
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-            margin-bottom: 10px;
+            transition: all 0.3s;
         }
-
+        
         .btn-primary {
             background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-
+        
         .btn-secondary {
             background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: white;
         }
-
-        .btn-secondary:hover {
+        
+        button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-            color: white;
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
         }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
-        }
-
-        /* Radio button styling */
-        input[type="radio"] {
-            margin-right: 8px;
-            transform: scale(1.2);
-        }
-
-        input[type="radio"] + label {
-            margin-right: 0;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        /* Status display */
-        #scanStatus {
-            font-family: 'Courier New', monospace;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .status-filtered {
-            color: #ff9800;
-            font-weight: bold;
-        }
-
+        
         .results-section {
             margin-top: 30px;
         }
-
-        .results-header {
-            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px 10px 0 0;
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-
+        
         .results-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 0 0 10px 10px;
+            margin-top: 20px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        .results-table th,
-        .results-table td {
+        
+        .results-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            font-weight: 600;
         }
-
-        .results-table th {
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .results-table tr:nth-child(even) {
             background: #f8f9fa;
-            font-weight: 600;
-            color: #333;
         }
-
-        .results-table tr:hover {
-            background: #f5f5f5;
-        }
-
+        
         .status-open {
-            color: #4CAF50;
+            color: #28a745;
             font-weight: 600;
         }
-
+        
         .status-closed {
-            color: #f44336;
+            color: #dc3545;
             font-weight: 600;
         }
-
+        
+        .status-error {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
         .loading {
+            display: none;
             text-align: center;
             padding: 20px;
-            font-size: 1.2em;
-            color: #666;
         }
-
+        
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #4CAF50;
+            border-top: 4px solid #3498db;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 10px;
+            margin: 0 auto 10px;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
+        
+        .info-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin-top: 20px;
         }
-
-        .col {
-            flex: 1;
-            min-width: 300px;
+        
+        .info-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
         }
-
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .scan-form {
-                padding: 20px;
-            }
-
-            .row {
+            .button-group {
                 flex-direction: column;
             }
-
-            .col {
-                min-width: 100%;
+            
+            .results-table {
+                font-size: 14px;
+            }
+            
+            .results-table th,
+            .results-table td {
+                padding: 8px;
             }
         }
     </style>
@@ -267,326 +251,269 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>�️ Advanced Port Scanner</h1>
-            <p>Professional Network Security & Service Discovery Tool</p>
+            <h1>🔍 Port Scanner Tool</h1>
+            <p>  Safe Network Service Checker  </p>
         </div>
-
+        
+        <div class="warning">
+            <strong>✅ Scanning Tool:</strong> This interactive demonstration helps understand network service concepts through practical examples with real-world targets.
+        </div>
+        
         <div class="main-content">
-            <div class="scan-form">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="target">🎯 Target Host (IP or Domain):</label>
-                            <input type="text" id="target" class="form-control" 
-                                   placeholder="e.g., 192.168.1.1 or google.com" value="google.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label>🚪 Scan Options:</label>
-                            <div style="margin-bottom: 15px;">
-                                <input type="radio" id="singlePort" name="scanType" value="single" checked>
-                                <label for="singlePort">Single Port</label>
-                                
-                                <input type="radio" id="portRange" name="scanType" value="range" style="margin-left: 20px;">
-                                <label for="portRange">Port Range</label>
-                                
-                                <input type="radio" id="quickScanType" name="scanType" value="quick" style="margin-left: 20px;">
-                                <label for="quickScanType">Quick Scan</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="singlePortGroup">
-                            <label for="port">Port Number:</label>
-                            <input type="number" id="port" class="form-control" 
-                                   placeholder="1-65535" value="80" min="1" max="65535">
-                        </div>
-
-                        <div class="form-group" id="portRangeGroup" style="display: none;">
-                            <label>Port Range:</label>
-                            <div style="display: flex; gap: 10px;">
-                                <input type="number" id="startPort" class="form-control" 
-                                       placeholder="Start Port" value="1" min="1" max="65535">
-                                <span style="margin: 12px 5px;">-</span>
-                                <input type="number" id="endPort" class="form-control" 
-                                       placeholder="End Port" value="100" min="1" max="65535">
-                            </div>
-                            <small style="color: #666;">Max 1000 ports per scan</small>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="form-group">
-                            <label>🔧 Scan Controls:</label>
-                            <div>
-                                <button class="btn btn-primary" onclick="startScan()">
-                                    🔍 Start Scan
-                                </button>
-                                <button class="btn btn-danger" onclick="stopScan()" id="stopBtn" style="display: none;">
-                                    ⏹️ Stop Scan
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>📊 Results Actions:</label>
-                            <div>
-                                <button class="btn btn-secondary" onclick="clearResults()">
-                                    🗑️ Clear Results
-                                </button>
-                                <button class="btn btn-secondary" onclick="exportResults()">
-                                    💾 Export JSON
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>ℹ️ Scan Status:</label>
-                            <div id="scanStatus" style="padding: 10px; background: #f8f9fa; border-radius: 5px; font-weight: bold;">
-                                Ready to scan
-                            </div>
-                        </div>
-                    </div>
+            <div class="scan-section">
+                <h2>🎯 Service Checker</h2>
+                
+                <div class="form-group">
+                    <label for="target">Target Host:</label>
+                    <select id="target">
+                        <option value="">Select a target...</option>
+                        {% for target in allowed_targets %}
+                        <option value="{{ target }}">{{ target }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="port">Service Port:</label>
+                    <select id="port">
+                        <option value="">Select a port...</option>
+                        {% for port in safe_ports %}
+                        <option value="{{ port }}">{{ port }} - {{ {21: 'FTP', 22: 'SSH', 25: 'SMTP', 53: 'DNS', 80: 'HTTP', 110: 'POP3', 143: 'IMAP', 443: 'HTTPS', 993: 'IMAPS', 995: 'POP3S', 8080: 'HTTP-Alt', 8443: 'HTTPS-Alt'}.get(port, 'Unknown') }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="checkSinglePort()">🔍 Check Single Port</button>
+                    <button class="btn-secondary" onclick="quickScan()">⚡ Quick Scan (Common Ports)</button>
                 </div>
             </div>
-
-            <div class="results-section" id="resultsSection" style="display: none;">
-                <div class="results-header">
-                    📋 Scan Results
-                </div>
-                <table class="results-table">
-                    <thead>
-                        <tr>
-                            <th>🎯 Target</th>
-                            <th>🚪 Port</th>
-                            <th>🔧 Service</th>
-                            <th>📊 Status</th>
-                            <th>⏱️ Response Time</th>
-                            <th>🕒 Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody id="resultsBody">
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="loadingSection" class="loading" style="display: none;">
+            
+            <div class="loading" id="loading">
                 <div class="spinner"></div>
-                Scanning in progress...
+                <p>Scanning in progress...</p>
+            </div>
+            
+            <div class="results-section">
+                <h2>📊 Scan Results</h2>
+                <div id="results-container">
+                    <p>No scans performed yet. Select a target and click scan to begin.</p>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h2>ℹ️ About This</h2>
+                <p>This is a safe, educational demonstration of port scanning concepts. It showcases the basic functionality of the full desktop application while complying with cloud platform security policies.</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>🎯 Allowed Targets</h3>
+                        <p>Only predefined public websites and localhost are permitted for scanning.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🚪 Safe Ports</h3>
+                        <p>Limited to common service ports (HTTP, HTTPS, SSH, FTP, etc.)</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🛡️ Security</h3>
+                        <p>Rate limited and monitored to prevent abuse and ensure compliance.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📱 Full Version</h3>
+                        <p>The desktop application offers complete functionality with advanced features.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let scanResults = [];
-        let scanning = false;
-
-        // Handle scan type radio buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const radioButtons = document.querySelectorAll('input[name="scanType"]');
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    toggleScanOptions();
-                });
-            });
-        });
-
-        function toggleScanOptions() {
-            const scanType = document.querySelector('input[name="scanType"]:checked').value;
-            const singlePortGroup = document.getElementById('singlePortGroup');
-            const portRangeGroup = document.getElementById('portRangeGroup');
-
-            if (scanType === 'single') {
-                singlePortGroup.style.display = 'block';
-                portRangeGroup.style.display = 'none';
-            } else if (scanType === 'range') {
-                singlePortGroup.style.display = 'none';
-                portRangeGroup.style.display = 'block';
-            } else {
-                singlePortGroup.style.display = 'none';
-                portRangeGroup.style.display = 'none';
-            }
-        }
-
-        function updateStatus(message) {
-            document.getElementById('scanStatus').textContent = message;
-        }
-
-        function showLoading() {
-            document.getElementById('loadingSection').style.display = 'block';
-            document.getElementById('stopBtn').style.display = 'inline-block';
-            scanning = true;
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingSection').style.display = 'none';
-            document.getElementById('stopBtn').style.display = 'none';
-            scanning = false;
-        }
-
-        function showResults() {
-            document.getElementById('resultsSection').style.display = 'block';
-        }
-
-        function addResult(result) {
-            scanResults.push(result);
-            const tbody = document.getElementById('resultsBody');
-            const row = tbody.insertRow();
+        async function checkSinglePort() {
+            const target = document.getElementById('target').value;
+            const port = parseInt(document.getElementById('port').value);
             
-            const statusClass = result.status === 'Open' ? 'status-open' : 
-                               result.status === 'Closed' ? 'status-closed' : 'status-filtered';
-            const statusIcon = result.status === 'Open' ? '✅' : 
-                              result.status === 'Closed' ? '❌' : '⚠️';
-            
-            row.innerHTML = `
-                <td>${result.target || document.getElementById('target').value}</td>
-                <td>${result.port}</td>
-                <td>${result.service || 'N/A'}</td>
-                <td class="${statusClass}">${statusIcon} ${result.status}</td>
-                <td>${result.response_time || 'N/A'}</td>
-                <td>${result.timestamp || new Date().toLocaleTimeString()}</td>
-            `;
-
-            // Auto-scroll to bottom
-            row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        async function startScan() {
-            if (scanning) return;
-
-            const scanType = document.querySelector('input[name="scanType"]:checked').value;
-            const target = document.getElementById('target').value.trim();
-
-            if (!target) {
-                alert('Please enter a target host');
+            // Validation
+            if (!target || target === "") {
+                showError("Please select a target host");
                 return;
             }
-
-            showLoading();
-            showResults();
-            updateStatus('Initializing scan...');
-
+            
+            if (!port || isNaN(port)) {
+                showError("Please select a port to scan");
+                return;
+            }
+            
+            showLoading(true);
+            
             try {
-                if (scanType === 'single') {
-                    await scanSinglePort(target);
-                } else if (scanType === 'range') {
-                    await scanPortRange(target);
-                } else if (scanType === 'quick') {
-                    await quickScan(target);
+                const response = await fetch('/api/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ target, port })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displaySingleResult(result);
+                } else {
+                    showError(result.error);
                 }
             } catch (error) {
-                alert('Scan failed: ' + error.message);
+                showError('Network error: ' + error.message);
             } finally {
-                hideLoading();
-                updateStatus('Scan completed');
+                showLoading(false);
             }
         }
-
-        async function scanSinglePort(target) {
-            const port = parseInt(document.getElementById('port').value);
-            updateStatus(`Scanning port ${port} on ${target}...`);
-
-            const response = await fetch('/api/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ target, port })
-            });
-
-            const result = await response.json();
+        
+        async function quickScan() {
+            const target = document.getElementById('target').value;
             
-            if (result.error) {
-                throw new Error(result.error);
-            } else {
-                addResult(result);
-            }
-        }
-
-        async function scanPortRange(target) {
-            const startPort = parseInt(document.getElementById('startPort').value);
-            const endPort = parseInt(document.getElementById('endPort').value);
-
-            if (startPort > endPort) {
-                throw new Error('Start port must be less than or equal to end port');
-            }
-
-            if ((endPort - startPort + 1) > 1000) {
-                throw new Error('Port range too large. Maximum 1000 ports per scan.');
-            }
-
-            updateStatus(`Scanning ports ${startPort}-${endPort} on ${target}...`);
-
-            const response = await fetch('/api/range-scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ target, start_port: startPort, end_port: endPort })
-            });
-
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.error);
-            } else {
-                data.results.forEach(result => {
-                    if (scanning) addResult(result);
-                });
-                updateStatus(`Range scan completed: ${data.summary.open_ports} open ports found`);
-            }
-        }
-
-        async function quickScan(target) {
-            updateStatus(`Quick scanning common ports on ${target}...`);
-
-            const response = await fetch('/api/quick-scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ target })
-            });
-
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.error);
-            } else {
-                data.results.forEach(result => {
-                    if (scanning) addResult(result);
-                });
-                updateStatus(`Quick scan completed: ${data.summary.open_ports} open ports found`);
-            }
-        }
-
-        function stopScan() {
-            scanning = false;
-            hideLoading();
-            updateStatus('Scan stopped by user');
-        }
-
-        function clearResults() {
-            scanResults = [];
-            document.getElementById('resultsBody').innerHTML = '';
-            document.getElementById('resultsSection').style.display = 'none';
-            updateStatus('Results cleared');
-        }
-
-        function exportResults() {
-            if (scanResults.length === 0) {
-                alert('No results to export');
+            // Validation
+            if (!target || target === "") {
+                showError("Please select a target host");
                 return;
             }
             
-            const csv = [
-                ['Target', 'Port', 'Service', 'Status', 'Response Time', 'Timestamp'],
-                ...scanResults.map(r => [r.target, r.port, r.service, r.status, r.response_time || 'N/A', r.timestamp])
-            ].map(row => row.join(',')).join('\n');
+            showLoading(true);
             
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'port_scan_results.csv';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
+            try {
+                const response = await fetch('/api/quick-scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ target })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayQuickScanResults(result);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
         }
+        
+        function displaySingleResult(result) {
+            const statusClass = getStatusClass(result.status);
+            
+            const html = `
+                <div class="success-message">
+                    <strong>✅ Scan Complete</strong> - Single port check completed successfully.
+                </div>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Status</th>
+                            <th>Service</th>
+                            <th>Response Time</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${result.port}</td>
+                            <td class="${statusClass}">${result.status}</td>
+                            <td>${result.service}</td>
+                            <td>${result.response_time}</td>
+                            <td>${result.timestamp}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        function displayQuickScanResults(data) {
+            let openPorts = 0;
+            let tableRows = '';
+            
+            data.results.forEach(result => {
+                const statusClass = getStatusClass(result.status);
+                if (result.status === 'Open') openPorts++;
+                
+                tableRows += `
+                    <tr>
+                        <td>${result.port}</td>
+                        <td class="${statusClass}">${result.status}</td>
+                        <td>${result.service}</td>
+                        <td>${result.response_time}</td>
+                        <td>${result.timestamp}</td>
+                    </tr>
+                `;
+            });
+            
+            const html = `
+                <div class="success-message">
+                    <strong>🎯 Quick Scan Complete</strong> - Found ${openPorts} open ports out of ${data.summary.total_checked} checked.
+                </div>
+                <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>📊 Summary:</strong> 
+                    Target: ${data.target} | 
+                    Open: ${data.summary.open_ports} | 
+                    Closed: ${data.summary.closed_ports} | 
+                    Scanned at: ${new Date(data.timestamp).toLocaleString()}
+                </div>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Status</th>
+                            <th>Service</th>
+                            <th>Response Time</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'open': return 'status-open';
+                case 'closed': return 'status-closed';
+                default: return 'status-error';
+            }
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        function showError(message) {
+            const html = `
+                <div class="error-message">
+                    <strong>❌ Error:</strong> ${message}
+                </div>
+            `;
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        // Load app info on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/info');
+                const info = await response.json();
+                console.log('App Info:', info);
+            } catch (error) {
+                console.error('Failed to load app info:', error);
+            }
+        });
     </script>
 </body>
 </html>
