@@ -1,59 +1,60 @@
-# 🔍 Advanced Port Scanner Tool
+# �️ Advanced Port Scanner Tool
 
-A comprehensive network security tool featuring both desktop GUI and web demo versions. Perfect for network administrators, security professionals, and educational purposes.
+A professional network security tool featuring both desktop GUI and web application versions. Built for network administrators, security professionals, cybersecurity students, and penetration testers.
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Web Demo](https://img.shields.io/badge/Demo-Live%20Web%20App-brightgreen.svg)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)
 
-## 🌟 **Live Web Demo**
-**🔗 [Try the Live Demo](https://port-scanner-demo.onrender.com)** *(Deploy using instructions below)*
+## 🌟 **Live Web Application**
+**🔗 [Deploy Your Own Instance](https://render.com)** *(Follow deployment instructions below)*
 
-## 📦 **Two Versions Available**
+## 📦 **Professional Versions**
 
-### 🖥️ **Desktop Version** (`advanced_scanner.py`)
-Full-featured GUI application with complete port scanning capabilities.
+### 🖥️ **Desktop Application** (`advanced_scanner.py`)
+Full-featured GUI application with complete enterprise-grade port scanning capabilities.
 
-### 🌐 **Web Demo Version** (`web_app.py`)
-Safe, cloud-deployable demonstration version for online showcase.
+### 🌐 **Web Application** (`web_app.py`)
+Modern web-based port scanner with professional interface and API endpoints.
 
 ## ✨ **Desktop Features**
 
-- 🖥️ **Modern GUI Interface**: Professional tkinter-based interface
-- ⚡ **Multi-threaded Scanning**: Fast, concurrent port scanning (configurable threads)
-- 🎯 **Flexible Targeting**: IP addresses, hostnames, and network ranges
-- 🔍 **Advanced Scanning**: TCP/UDP protocols with stealth mode
-- 🏷️ **Banner Grabbing**: Service version detection and identification
-- 🌐 **Network Discovery**: Live host discovery with CIDR support
-- 📊 **Real-time Visualization**: Live charts and progress tracking
-- 📋 **Scan History**: SQLite database with search and filtering
-- 💾 **Multiple Export Formats**: CSV, JSON, and styled HTML reports
-- ⚙️ **Professional Features**: Preferences, database manager, help system
-- 🛡️ **Security Focused**: Ethical guidelines and responsible use features
+- 🖥️ **Professional GUI**: Modern tkinter interface with advanced controls
+- ⚡ **High-Performance Scanning**: Multi-threaded concurrent scanning (up to 1000 threads)
+- 🎯 **Comprehensive Targeting**: IP addresses, hostnames, and CIDR network ranges
+- 🔍 **Advanced Protocols**: TCP Connect, TCP SYN, and UDP scanning modes
+- 🏷️ **Service Discovery**: Banner grabbing with service version detection
+- 🌐 **Network Discovery**: Live host discovery with ping sweep
+- 📊 **Real-time Analytics**: Live charts, progress tracking, and statistics
+- 📋 **Persistent History**: SQLite database with advanced search and filtering
+- 💾 **Professional Reporting**: CSV, JSON, and HTML reports with styling
+- ⚙️ **Enterprise Features**: Preferences, database management, help system
+- 🛡️ **Security Focused**: Ethical guidelines and responsible use framework
 
-## 🌐 **Web Demo Features**
+## 🌐 **Web Application Features**
 
-- 🔒 **Cloud-Safe**: Compliant with platform security policies
-- 🎨 **Modern UI**: Responsive design with gradient styling
-- 📱 **Mobile Friendly**: Works on all devices
-- 🔍 **Service Checking**: Test common ports on predefined targets
-- ⚡ **Quick Scan**: Automated scanning of popular services
-- 📊 **Real-time Results**: Live updates with response times
-- 🛡️ **Educational**: Safe demonstration of networking concepts
+- 🎨 **Modern Interface**: Responsive design with professional styling
+- 📱 **Cross-Platform**: Works on desktop, tablet, and mobile devices
+- 🔍 **Flexible Scanning**: Single port, port range, and quick scan modes
+- ⚡ **Fast Performance**: Multi-threaded backend with real-time updates
+- 📊 **Live Results**: Dynamic result display with auto-scrolling
+- 🛡️ **Professional Grade**: Full port range support with validation
+- � **Export Capabilities**: JSON export for integration with other tools
+- 🚀 **API Endpoints**: RESTful API for programmatic access
 
 ## 🚀 **Quick Start**
 
-### Desktop Version
+### Desktop Application
 ```bash
-# Run the advanced GUI version
+# Run the full-featured desktop version
 python advanced_scanner.py
 
 # Or run the basic version
 python scanner.py
 ```
 
-### Web Demo Version
+### Web Application
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -64,7 +65,7 @@ python web_app.py
 # Access at: http://localhost:5000
 ```
 
-## 🌐 **Deploy Web Demo to Cloud**
+## 🌐 **Deploy Web Application to Cloud**
 
 ### Option 1: Render.com (Recommended)
 1. Fork this repository
@@ -75,7 +76,7 @@ python web_app.py
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `python web_app.py`
    - **Plan:** Free
-6. Deploy and get your live link!
+6. Deploy and get your live application!
 
 ### Option 2: Railway.app
 1. Go to [railway.app](https://railway.app)

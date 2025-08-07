@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Port Scanner Tool with GUI
-A simple and effective port scanning tool with a graphical user interface.
+Basic Port Scanner Tool with GUI
+A simple and effective port scanning tool.
 """
 
 import socket
@@ -38,10 +38,10 @@ class PortScanner:
         
         # Setup GUI
         self.setup_gui()
-        
+
     def setup_gui(self):
-        """Create and setup the GUI components"""
-        # Main frame
+        """Setup the GUI components"""
+        # Main frame with padding
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.grid(row=0, column=0, sticky="nsew")
         
@@ -50,63 +50,63 @@ class PortScanner:
         self.root.rowconfigure(0, weight=1)
         main_frame.columnconfigure(1, weight=1)
         
-        # Target input
-        ttk.Label(main_frame, text="Target Host/IP:").grid(row=0, column=0, sticky="w", pady=5)
+        # Target input section
+        ttk.Label(main_frame, text="Target IP/Hostname:").grid(row=0, column=0, sticky="w", pady=5)
         self.target_var = tk.StringVar(value="127.0.0.1")
         self.target_entry = ttk.Entry(main_frame, textvariable=self.target_var, width=30)
         self.target_entry.grid(row=0, column=1, sticky="ew", pady=5, padx=(5, 0))
         
-        # Port range input
-        ttk.Label(main_frame, text="Port Range:").grid(row=1, column=0, sticky="w", pady=5)
+        # Port range section
         port_frame = ttk.Frame(main_frame)
-        port_frame.grid(row=1, column=1, sticky="ew", pady=5, padx=(5, 0))
+        port_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=10)
+        port_frame.columnconfigure(1, weight=1)
+        port_frame.columnconfigure(3, weight=1)
         
+        ttk.Label(port_frame, text="Start Port:").grid(row=0, column=0, sticky="w")
         self.start_port_var = tk.StringVar(value="1")
+        self.start_port_entry = ttk.Entry(port_frame, textvariable=self.start_port_var, width=10)
+        self.start_port_entry.grid(row=0, column=1, sticky="w", padx=(5, 10))
+        
+        ttk.Label(port_frame, text="End Port:").grid(row=0, column=2, sticky="w")
         self.end_port_var = tk.StringVar(value="1000")
+        self.end_port_entry = ttk.Entry(port_frame, textvariable=self.end_port_var, width=10)
+        self.end_port_entry.grid(row=0, column=3, sticky="w", padx=(5, 0))
         
-        ttk.Entry(port_frame, textvariable=self.start_port_var, width=10).pack(side=tk.LEFT)
-        ttk.Label(port_frame, text=" to ").pack(side=tk.LEFT)
-        ttk.Entry(port_frame, textvariable=self.end_port_var, width=10).pack(side=tk.LEFT)
+        # Scan options section
+        options_frame = ttk.LabelFrame(main_frame, text="Scan Options", padding="10")
+        options_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=10)
+        options_frame.columnconfigure(1, weight=1)
         
-        # Timeout setting
-        ttk.Label(main_frame, text="Timeout (seconds):").grid(row=2, column=0, sticky="w", pady=5)
+        ttk.Label(options_frame, text="Timeout (seconds):").grid(row=0, column=0, sticky="w")
         self.timeout_var = tk.StringVar(value="1")
-        ttk.Entry(main_frame, textvariable=self.timeout_var, width=10).grid(row=2, column=1, sticky="w", pady=5, padx=(5, 0))
+        timeout_entry = ttk.Entry(options_frame, textvariable=self.timeout_var, width=10)
+        timeout_entry.grid(row=0, column=1, sticky="w", padx=(5, 0))
         
-        # Thread count
-        ttk.Label(main_frame, text="Thread Count:").grid(row=3, column=0, sticky="w", pady=5)
+        ttk.Label(options_frame, text="Max Threads:").grid(row=1, column=0, sticky="w", pady=(5, 0))
         self.threads_var = tk.StringVar(value="100")
-        ttk.Entry(main_frame, textvariable=self.threads_var, width=10).grid(row=3, column=1, sticky="w", pady=5, padx=(5, 0))
+        threads_entry = ttk.Entry(options_frame, textvariable=self.threads_var, width=10)
+        threads_entry.grid(row=1, column=1, sticky="w", padx=(5, 0), pady=(5, 0))
         
-        # Advanced scanning options
-        advanced_frame = ttk.LabelFrame(main_frame, text="Advanced Options", padding="5")
-        advanced_frame.grid(row=4, column=0, columnspan=2, sticky="ew", pady=5)
+        # Scan type
+        ttk.Label(options_frame, text="Scan Type:").grid(row=0, column=2, sticky="w", padx=(20, 0))
+        self.scan_type_var = tk.StringVar(value="TCP Connect")
+        scan_type_combo = ttk.Combobox(options_frame, textvariable=self.scan_type_var, 
+                                      values=["TCP Connect", "TCP SYN", "UDP"], 
+                                      state="readonly", width=15)
+        scan_type_combo.grid(row=0, column=3, sticky="w", padx=(5, 0))
         
-        # Scan type selection
-        scan_type_frame = ttk.Frame(advanced_frame)
-        scan_type_frame.pack(fill=tk.X, pady=2)
+        # Advanced options
+        self.banner_var = tk.BooleanVar()
+        banner_check = ttk.Checkbutton(options_frame, text="Banner Grabbing", variable=self.banner_var)
+        banner_check.grid(row=1, column=2, sticky="w", padx=(20, 0), pady=(5, 0))
         
-        ttk.Label(scan_type_frame, text="Scan Type:").pack(side=tk.LEFT)
-        self.scan_type = tk.StringVar(value="tcp")
-        ttk.Radiobutton(scan_type_frame, text="TCP Connect", variable=self.scan_type, value="tcp").pack(side=tk.LEFT, padx=5)
-        ttk.Radiobutton(scan_type_frame, text="UDP Scan", variable=self.scan_type, value="udp").pack(side=tk.LEFT, padx=5)
+        self.stealth_var = tk.BooleanVar()
+        stealth_check = ttk.Checkbutton(options_frame, text="Stealth Mode", variable=self.stealth_var)
+        stealth_check.grid(row=1, column=3, sticky="w", padx=(5, 0), pady=(5, 0))
         
-        # Additional options
-        options_frame = ttk.Frame(advanced_frame)
-        options_frame.pack(fill=tk.X, pady=2)
-        
-        self.banner_grab_var = tk.BooleanVar(value=True)
-        ttk.Checkbutton(options_frame, text="Banner Grabbing", variable=self.banner_grab_var).pack(side=tk.LEFT, padx=5)
-        
-        self.stealth_mode_var = tk.BooleanVar()
-        ttk.Checkbutton(options_frame, text="Stealth Mode", variable=self.stealth_mode_var).pack(side=tk.LEFT, padx=5)
-        
-        self.host_discovery_var = tk.BooleanVar()
-        ttk.Checkbutton(options_frame, text="Host Discovery", variable=self.host_discovery_var).pack(side=tk.LEFT, padx=5)
-        
-        # Buttons frame
+        # Control buttons
         button_frame = ttk.Frame(main_frame)
-        button_frame.grid(row=5, column=0, columnspan=2, pady=10)
+        button_frame.grid(row=3, column=0, columnspan=2, pady=20)
         
         self.scan_button = ttk.Button(button_frame, text="Start Scan", command=self.start_scan)
         self.scan_button.pack(side=tk.LEFT, padx=5)
@@ -127,145 +127,176 @@ class PortScanner:
         self.clear_button.pack(side=tk.LEFT, padx=5)
         
         # Progress bar
+        progress_frame = ttk.Frame(main_frame)
+        progress_frame.grid(row=4, column=0, columnspan=2, sticky="ew", pady=10)
+        progress_frame.columnconfigure(0, weight=1)
+        
         self.progress_var = tk.DoubleVar()
-        self.progress_bar = ttk.Progressbar(main_frame, variable=self.progress_var, maximum=100)
-        self.progress_bar.grid(row=6, column=0, columnspan=2, sticky="ew", pady=5)
+        self.progress_bar = ttk.Progressbar(progress_frame, variable=self.progress_var, maximum=100)
+        self.progress_bar.grid(row=0, column=0, sticky="ew")
         
-        # Status label
-        self.status_var = tk.StringVar(value="Ready to scan")
-        self.status_label = ttk.Label(main_frame, textvariable=self.status_var)
-        self.status_label.grid(row=7, column=0, columnspan=2, pady=5)
+        self.status_var = tk.StringVar(value="Ready to scan. Enter target IP/hostname and port range.")
+        status_label = ttk.Label(progress_frame, textvariable=self.status_var)
+        status_label.grid(row=1, column=0, sticky="w", pady=(5, 0))
         
-        # Results frame
+        # Results section
         results_frame = ttk.LabelFrame(main_frame, text="Scan Results", padding="5")
-        results_frame.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=10)
+        results_frame.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=10)
         results_frame.columnconfigure(0, weight=1)
         results_frame.rowconfigure(0, weight=1)
-        main_frame.rowconfigure(8, weight=1)
+        main_frame.rowconfigure(5, weight=1)
         
-        # Treeview for results with additional columns
-        columns = ("Port", "State", "Service", "Banner", "Timestamp")
+        # Treeview for results
+        columns = ("Port", "Service", "Status", "Banner")
         self.tree = ttk.Treeview(results_frame, columns=columns, show="headings", height=15)
         
         for col in columns:
             self.tree.heading(col, text=col)
-            self.tree.column(col, width=150)
+            self.tree.column(col, width=120)
+        
+        self.tree.grid(row=0, column=0, sticky="nsew")
         
         # Scrollbars
         v_scrollbar = ttk.Scrollbar(results_frame, orient=tk.VERTICAL, command=self.tree.yview)
         h_scrollbar = ttk.Scrollbar(results_frame, orient=tk.HORIZONTAL, command=self.tree.xview)
         self.tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
-        
-        # Grid layout for tree and scrollbars
-        self.tree.grid(row=0, column=0, sticky="nsew")
         v_scrollbar.grid(row=0, column=1, sticky="ns")
         h_scrollbar.grid(row=1, column=0, sticky="ew")
-        
-    def validate_inputs(self):
-        """Validate user inputs"""
+
+    def setup_database(self):
+        """Setup SQLite database for scan history"""
         try:
-            # Validate target
+            self.conn = sqlite3.connect('scan_history.db')
+            cursor = self.conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS scans (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    timestamp TEXT,
+                    target TEXT,
+                    start_port INTEGER,
+                    end_port INTEGER,
+                    open_ports TEXT,
+                    scan_duration REAL
+                )
+            ''')
+            self.conn.commit()
+        except Exception as e:
+            print(f"Database setup error: {e}")
+
+    def validate_inputs(self):
+        """Validate user inputs before scanning"""
+        try:
             target = self.target_var.get().strip()
             if not target:
-                raise ValueError("Target host/IP cannot be empty")
+                raise ValueError("Target cannot be empty")
             
-            # Try to parse as IP address, if it fails, assume it's a hostname
-            try:
-                ipaddress.ip_address(target)
-            except ipaddress.AddressValueError:
-                # It's probably a hostname, which is fine
-                pass
-            
-            # Validate port range
             start_port = int(self.start_port_var.get())
             end_port = int(self.end_port_var.get())
+            timeout = float(self.timeout_var.get())
+            max_threads = int(self.threads_var.get())
             
             if start_port < 1 or start_port > 65535:
                 raise ValueError("Start port must be between 1 and 65535")
+            
             if end_port < 1 or end_port > 65535:
                 raise ValueError("End port must be between 1 and 65535")
+            
             if start_port > end_port:
                 raise ValueError("Start port cannot be greater than end port")
             
-            # Validate timeout
-            timeout = float(self.timeout_var.get())
             if timeout <= 0:
                 raise ValueError("Timeout must be greater than 0")
             
-            # Validate thread count
-            threads = int(self.threads_var.get())
-            if threads < 1 or threads > 1000:
-                raise ValueError("Thread count must be between 1 and 1000")
+            if max_threads < 1 or max_threads > 1000:
+                raise ValueError("Max threads must be between 1 and 1000")
             
-            return target, start_port, end_port, timeout, threads
+            return target, start_port, end_port, timeout, max_threads
             
         except ValueError as e:
             messagebox.showerror("Input Error", str(e))
             return None
-    
+
     def get_service_name(self, port):
-        """Get common service name for a port"""
-        services = {
+        """Get service name for a given port"""
+        common_ports = {
             21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 53: "DNS",
             80: "HTTP", 110: "POP3", 143: "IMAP", 443: "HTTPS", 993: "IMAPS",
-            995: "POP3S", 3389: "RDP", 5432: "PostgreSQL", 3306: "MySQL",
-            1433: "MSSQL", 6379: "Redis", 27017: "MongoDB", 5672: "RabbitMQ"
+            995: "POP3S", 3389: "RDP", 5900: "VNC", 3306: "MySQL", 5432: "PostgreSQL"
         }
-        return services.get(port, "Unknown")
-    
+        return common_ports.get(port, "Unknown")
+
     def scan_port(self, target, port, timeout):
-        """Scan a single port with advanced detection"""
+        """Scan a single port"""
         try:
-            scan_type = self.scan_type.get()
+            scan_type = self.scan_type_var.get()
             
-            if scan_type == "udp":
-                return self.udp_scan_port(target, port, timeout)
-            
-            # TCP scan
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(timeout)
-            result = sock.connect_ex((target, port))
-            sock.close()
-            
-            if result == 0:
-                service = self.get_service_name(port)
-                banner = ""
-                
-                # Banner grabbing if enabled
-                if self.banner_grab_var.get():
-                    service, banner = self.detect_service_version(target, port, timeout)
-                
-                # Stealth mode delay
-                if self.stealth_mode_var.get():
+            if scan_type == "UDP":
+                # UDP scan
+                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                sock.settimeout(timeout)
+                try:
+                    sock.sendto(b"test", (target, port))
+                    sock.recvfrom(1024)
+                    result = "Open"
+                except socket.timeout:
+                    result = "Open|Filtered"
+                except socket.error:
+                    result = "Closed"
+                finally:
+                    sock.close()
+            else:
+                # TCP scan
+                if scan_type == "TCP SYN" and self.stealth_var.get():
+                    # Simulate stealth scan with random delay
                     time.sleep(random.uniform(0.1, 0.5))
                 
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                return (port, "Open", service, banner, timestamp)
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(timeout)
+                
+                connection_result = sock.connect_ex((target, port))
+                
+                if connection_result == 0:
+                    result = "Open"
+                    banner = ""
+                    
+                    # Banner grabbing if enabled
+                    if self.banner_var.get():
+                        try:
+                            sock.send(b"GET / HTTP/1.1\r\nHost: " + target.encode() + b"\r\n\r\n")
+                            banner = sock.recv(1024).decode('utf-8', errors='ignore').strip()
+                            if len(banner) > 100:
+                                banner = banner[:100] + "..."
+                        except:
+                            banner = "No banner"
+                    
+                    sock.close()
+                    return port, self.get_service_name(port), result, banner
+                else:
+                    result = "Closed"
+                    sock.close()
             
-        except Exception:
-            pass
-        
-        return None
-    
+            return port, self.get_service_name(port), result, ""
+            
+        except Exception as e:
+            return port, self.get_service_name(port), "Error", str(e)
+
     def scan_worker(self, target, ports, timeout, results_queue, progress_queue):
-        """Worker function for scanning ports"""
+        """Worker function for threaded scanning"""
         for port in ports:
             if not self.scanning:
                 break
             
             result = self.scan_port(target, port, timeout)
-            if result:
-                results_queue.put(result)
-            
+            results_queue.put(result)
             progress_queue.put(1)
-    
+
     def start_scan(self):
         """Start the port scanning process"""
-        validation_result = self.validate_inputs()
-        if not validation_result:
+        inputs = self.validate_inputs()
+        if not inputs:
             return
         
-        target, start_port, end_port, timeout, max_threads = validation_result
+        target, start_port, end_port, timeout, max_threads = inputs
         
         # Clear previous results
         self.clear_results()
@@ -275,164 +306,289 @@ class PortScanner:
         self.scan_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         self.progress_var.set(0)
-        self.status_var.set(f"Scanning {target}...")
         
         # Start scanning in a separate thread
         scan_thread = threading.Thread(
-            target=self.run_scan, 
-            args=(target, start_port, end_port, timeout, max_threads)
+            target=self.run_scan,
+            args=(target, start_port, end_port, timeout, max_threads),
+            daemon=True
         )
-        scan_thread.daemon = True
         scan_thread.start()
         
         # Start progress monitoring
         self.monitor_progress()
-    
+
     def run_scan(self, target, start_port, end_port, timeout, max_threads):
         """Run the actual port scan"""
         try:
-            # Resolve hostname to IP if needed
+            start_time = time.time()
+            
+            # Resolve hostname to IP
             try:
                 target_ip = socket.gethostbyname(target)
-                if target != target_ip:
-                    self.status_var.set(f"Scanning {target} ({target_ip})...")
+                self.status_var.set(f"Scanning {target} ({target_ip})...")
             except socket.gaierror:
-                messagebox.showerror("Error", f"Could not resolve hostname: {target}")
-                self.scan_finished()
+                self.status_var.set(f"Could not resolve hostname: {target}")
                 return
             
-            total_ports = end_port - start_port + 1
-            self.total_ports = total_ports
-            self.scanned_ports = 0
-            
-            # Create port list
             ports = list(range(start_port, end_port + 1))
+            total_ports = len(ports)
             
-            # Split ports among threads
-            chunk_size = max(1, len(ports) // max_threads)
-            port_chunks = [ports[i:i + chunk_size] for i in range(0, len(ports), chunk_size)]
-            
-            # Create queues for results and progress
+            self.progress_queue = queue.Queue()
             results_queue = queue.Queue()
             
-            # Start thread pool
+            # Calculate chunk size for threading
+            chunk_size = max(1, total_ports // max_threads)
+            port_chunks = [ports[i:i + chunk_size] for i in range(0, total_ports, chunk_size)]
+            
+            # Start worker threads
             with ThreadPoolExecutor(max_workers=max_threads) as executor:
                 futures = []
                 for chunk in port_chunks:
-                    if not self.scanning:
-                        break
                     future = executor.submit(
-                        self.scan_worker, target_ip, chunk, timeout, 
-                        results_queue, self.progress_queue
+                        self.scan_worker,
+                        target_ip, chunk, timeout, results_queue, self.progress_queue
                     )
                     futures.append(future)
                 
                 # Wait for all threads to complete
                 for future in futures:
-                    if not self.scanning:
-                        break
                     future.result()
             
-            # Collect remaining results
+            # Collect results
             while not results_queue.empty():
                 result = results_queue.get()
                 self.results.append(result)
-                self.tree.insert("", tk.END, values=result)
+                
+                # Update tree view
+                self.root.after(0, self.update_tree_view, result)
             
-            # Save to database
-            if self.results:
-                self.save_to_database(target, self.results, self.scan_type.get())
+            # Save scan to database
+            scan_duration = time.time() - start_time
+            open_ports = [str(r[0]) for r in self.results if r[2] == "Open"]
             
-            if self.scanning:
-                self.status_var.set(f"Scan completed. Found {len(self.results)} open ports.")
-            else:
-                self.status_var.set("Scan stopped by user.")
+            try:
+                cursor = self.conn.cursor()
+                cursor.execute('''
+                    INSERT INTO scans (timestamp, target, start_port, end_port, open_ports, scan_duration)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ''', (
+                    datetime.datetime.now().isoformat(),
+                    target,
+                    start_port,
+                    end_port,
+                    ','.join(open_ports),
+                    scan_duration
+                ))
+                self.conn.commit()
+            except Exception as e:
+                print(f"Database error: {e}")
+            
+            self.root.after(0, self.scan_finished)
             
         except Exception as e:
-            messagebox.showerror("Scan Error", f"An error occurred during scanning: {str(e)}")
-        finally:
-            self.scan_finished()
-    
+            self.root.after(0, lambda: messagebox.showerror("Scan Error", f"Scan failed: {str(e)}"))
+            self.root.after(0, self.scan_finished)
+
+    def update_tree_view(self, result):
+        """Update the tree view with new result"""
+        self.tree.insert("", "end", values=result)
+
     def monitor_progress(self):
-        """Monitor and update progress"""
+        """Monitor scan progress and update progress bar"""
         try:
+            progress_count = 0
             while not self.progress_queue.empty():
                 self.progress_queue.get()
-                self.scanned_ports += 1
-                if hasattr(self, 'total_ports') and self.total_ports > 0:
-                    progress = (self.scanned_ports / self.total_ports) * 100
-                    self.progress_var.set(progress)
-        except:
-            pass
-        
-        if self.scanning:
-            self.root.after(100, self.monitor_progress)
-    
+                progress_count += 1
+            
+            if progress_count > 0:
+                total_ports = int(self.end_port_var.get()) - int(self.start_port_var.get()) + 1
+                current_progress = (len(self.results) / total_ports) * 100
+                self.progress_var.set(min(current_progress, 100))
+            
+            if self.scanning:
+                self.root.after(100, self.monitor_progress)
+                
+        except Exception as e:
+            print(f"Progress monitoring error: {e}")
+
     def stop_scan(self):
         """Stop the current scan"""
         self.scanning = False
         self.scan_finished()
-    
+
     def scan_finished(self):
-        """Reset UI state after scan completion"""
+        """Handle scan completion"""
         self.scanning = False
         self.scan_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
         self.progress_var.set(100)
-    
+        
+        open_ports = len([r for r in self.results if r[2] == "Open"])
+        total_ports = len(self.results)
+        self.status_var.set(f"Scan completed. Found {open_ports} open ports out of {total_ports} scanned.")
+
     def clear_results(self):
-        """Clear all scan results"""
-        self.results = []
+        """Clear scan results"""
         for item in self.tree.get_children():
             self.tree.delete(item)
-        self.status_var.set("Results cleared. Ready to scan.")
-    
+        self.results = []
+        self.progress_var.set(0)
+        self.status_var.set("Results cleared. Ready for new scan.")
+
     def save_results(self):
-        """Save scan results to CSV file"""
+        """Save results to CSV file"""
         if not self.results:
-            messagebox.showwarning("No Results", "No scan results to save.")
+            messagebox.showwarning("No Data", "No scan results to save!")
             return
         
         filename = filedialog.asksaveasfilename(
             defaultextension=".csv",
             filetypes=[("CSV files", "*.csv"), ("All files", "*.*")],
-            initialfile="scan_results.csv"
+            title="Save Scan Results"
         )
         
         if filename:
             try:
                 with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
                     writer = csv.writer(csvfile)
-                    writer.writerow(["Port", "State", "Service", "Banner", "Timestamp"])
+                    
+                    # Write header
+                    writer.writerow(["Port", "Service", "Status", "Banner", "Timestamp", "Target"])
+                    
+                    # Write data
+                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    target = self.target_var.get()
                     
                     for result in self.results:
-                        # Handle different result formats
-                        if len(result) == 5:
-                            writer.writerow(result)
-                        elif len(result) == 4:
-                            # Old format without banner
-                            writer.writerow([result[0], result[1], result[2], "", result[3]])
-                        else:
-                            writer.writerow(result)
+                        row = list(result) + [timestamp, target]
+                        writer.writerow(row)
                 
-                messagebox.showinfo("Success", f"Results saved to {filename}")
-                
-                # Also save to default results.csv in the same directory
-                default_path = "results.csv"
-                with open(default_path, 'w', newline='', encoding='utf-8') as csvfile:
-                    writer = csv.writer(csvfile)
-                    writer.writerow(["Port", "State", "Service", "Banner", "Timestamp"])
-                    for result in self.results:
-                        if len(result) == 5:
-                            writer.writerow(result)
-                        elif len(result) == 4:
-                            writer.writerow([result[0], result[1], result[2], "", result[3]])
-                        else:
-                            writer.writerow(result)
+                messagebox.showinfo("Save Complete", f"Results saved to {filename}")
                 
             except Exception as e:
                 messagebox.showerror("Save Error", f"Could not save file: {str(e)}")
+
+    def export_to_json(self):
+        """Export scan results to JSON format"""
+        if not self.results:
+            messagebox.showwarning("No Data", "No scan results to export!")
+            return
+        
+        filename = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            title="Save JSON Report"
+        )
+        
+        if filename:
+            try:
+                export_data = {
+                    "scan_info": {
+                        "target": self.target_var.get(),
+                        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "total_ports_scanned": len(self.results),
+                        "open_ports_found": len([r for r in self.results if r[2] == "Open"])
+                    },
+                    "results": []
+                }
+                
+                for result in self.results:
+                    export_data["results"].append({
+                        "port": result[0],
+                        "service": result[1],
+                        "status": result[2],
+                        "banner": result[3] if len(result) > 3 else ""
+                    })
+                
+                with open(filename, 'w') as f:
+                    json.dump(export_data, f, indent=2)
+                
+                messagebox.showinfo("Export Complete", f"Results exported to {filename}")
+                
+            except Exception as e:
+                messagebox.showerror("Export Error", f"Could not export file: {str(e)}")
+
+    def generate_html_report(self):
+        """Generate HTML report of scan results"""
+        if not self.results:
+            messagebox.showwarning("No Data", "No scan results to generate report!")
+            return
+        
+        filename = filedialog.asksaveasfilename(
+            defaultextension=".html",
+            filetypes=[("HTML files", "*.html"), ("All files", "*.*")],
+            title="Save HTML Report"
+        )
+        
+        if filename:
+            try:
+                html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Port Scanner Report</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+        .header {{ background-color: #f0f0f0; padding: 15px; border-radius: 5px; }}
+        .stats {{ margin: 20px 0; }}
+        table {{ border-collapse: collapse; width: 100%; }}
+        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+        th {{ background-color: #f2f2f2; }}
+        .open {{ color: green; font-weight: bold; }}
+        .closed {{ color: red; }}
+        .filtered {{ color: orange; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Port Scanner Report</h1>
+        <p><strong>Target:</strong> {self.target_var.get()}</p>
+        <p><strong>Scan Date:</strong> {time.strftime("%Y-%m-%d %H:%M:%S")}</p>
+    </div>
     
+    <div class="stats">
+        <h2>Scan Statistics</h2>
+        <p><strong>Total Ports Scanned:</strong> {len(self.results)}</p>
+        <p><strong>Open Ports Found:</strong> {len([r for r in self.results if r[2] == "Open"])}</p>
+        <p><strong>Closed Ports:</strong> {len([r for r in self.results if r[2] == "Closed"])}</p>
+    </div>
+    
+    <h2>Detailed Results</h2>
+    <table>
+        <tr>
+            <th>Port</th>
+            <th>Service</th>
+            <th>Status</th>
+            <th>Banner</th>
+        </tr>
+"""
+                
+                for result in self.results:
+                    status_class = result[2].lower()
+                    banner = result[3] if len(result) > 3 else "N/A"
+                    html_content += f"""
+        <tr>
+            <td>{result[0]}</td>
+            <td>{result[1]}</td>
+            <td class="{status_class}">{result[2]}</td>
+            <td>{banner}</td>
+        </tr>"""
+                
+                html_content += """
+    </table>
+</body>
+</html>"""
+                
+                with open(filename, 'w') as f:
+                    f.write(html_content)
+                
+                messagebox.showinfo("Report Generated", f"HTML report saved to {filename}")
+                
+            except Exception as e:
+                messagebox.showerror("Report Error", f"Could not generate report: {str(e)}")
+
     def run(self):
         """Start the GUI application"""
         self.status_var.set("Ready to scan. Enter target IP/hostname and port range.")
@@ -445,7 +601,7 @@ class PortScanner:
         except:
             pass
 
-    # ...existing code...
+
 def main():
     """Main function to run the Port Scanner Tool"""
     try:
