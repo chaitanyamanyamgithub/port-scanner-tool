@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Port Scanner Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+            color: #856404;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .scan-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results-section {
+            margin-top: 30px;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .results-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .status-open {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .status-closed {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .status-error {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .results-table {
+                font-size: 14px;
+            }
+            
+            .results-table th,
+            .results-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Port Scanner Demo</h1>
+            <p>Safe Network Service Checker for Educational Purposes</p>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Demo Version:</strong> This is a limited demonstration version that only checks common services on predefined targets. For security reasons, it cannot scan arbitrary hosts or perform full port range scans.
+        </div>
+        
+        <div class="main-content">
+            <div class="scan-section">
+                <h2>🎯 Service Checker</h2>
+                
+                <div class="form-group">
+                    <label for="target">Target Host:</label>
+                    <select id="target">
+                        {% for target in allowed_targets %}
+                        <option value="{{ target }}">{{ target }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="port">Service Port:</label>
+                    <select id="port">
+                        {% for port in safe_ports %}
+                        <option value="{{ port }}">{{ port }} - {{ {21: 'FTP', 22: 'SSH', 25: 'SMTP', 53: 'DNS', 80: 'HTTP', 110: 'POP3', 143: 'IMAP', 443: 'HTTPS', 993: 'IMAPS', 995: 'POP3S', 8080: 'HTTP-Alt', 8443: 'HTTPS-Alt'}.get(port, 'Unknown') }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="checkSinglePort()">🔍 Check Single Port</button>
+                    <button class="btn-secondary" onclick="quickScan()">⚡ Quick Scan (Common Ports)</button>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Scanning in progress...</p>
+            </div>
+            
+            <div class="results-section">
+                <h2>📊 Scan Results</h2>
+                <div id="results-container">
+                    <p>No scans performed yet. Select a target and click scan to begin.</p>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h2>ℹ️ About This Demo</h2>
+                <p>This is a safe, educational demonstration of port scanning concepts. It showcases the basic functionality of the full desktop application while complying with cloud platform security policies.</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>🎯 Allowed Targets</h3>
+                        <p>Only predefined public websites and localhost are permitted for scanning.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🚪 Safe Ports</h3>
+                        <p>Limited to common service ports (HTTP, HTTPS, SSH, FTP, etc.)</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🛡️ Security</h3>
+                        <p>Rate limited and monitored to prevent abuse and ensure compliance.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📱 Full Version</h3>
+                        <p>The desktop application offers complete functionality with advanced features.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function checkSinglePort() {
+            const target = document.getElementById('target').value;
+            const port = parseInt(document.getElementById('port').value);
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ target, port })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displaySingleResult(result);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        async function quickScan() {
+            const target = document.getElementById('target').value;
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/quick-scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ target })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayQuickScanResults(result);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function displaySingleResult(result) {
+            const statusClass = getStatusClass(result.status);
+            
+            const html = `
+                <div class="success-message">
+                    <strong>✅ Scan Complete</strong> - Single port check completed successfully.
+                </div>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Status</th>
+                            <th>Service</th>
+                            <th>Response Time</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${result.port}</td>
+                            <td class="${statusClass}">${result.status}</td>
+                            <td>${result.service}</td>
+                            <td>${result.response_time}</td>
+                            <td>${result.timestamp}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        function displayQuickScanResults(data) {
+            let openPorts = 0;
+            let tableRows = '';
+            
+            data.results.forEach(result => {
+                const statusClass = getStatusClass(result.status);
+                if (result.status === 'Open') openPorts++;
+                
+                tableRows += `
+                    <tr>
+                        <td>${result.port}</td>
+                        <td class="${statusClass}">${result.status}</td>
+                        <td>${result.service}</td>
+                        <td>${result.response_time}</td>
+                        <td>${result.timestamp}</td>
+                    </tr>
+                `;
+            });
+            
+            const html = `
+                <div class="success-message">
+                    <strong>🎯 Quick Scan Complete</strong> - Found ${openPorts} open ports out of ${data.summary.total_checked} checked.
+                </div>
+                <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>📊 Summary:</strong> 
+                    Target: ${data.target} | 
+                    Open: ${data.summary.open_ports} | 
+                    Closed: ${data.summary.closed_ports} | 
+                    Scanned at: ${new Date(data.timestamp).toLocaleString()}
+                </div>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Status</th>
+                            <th>Service</th>
+                            <th>Response Time</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'open': return 'status-open';
+                case 'closed': return 'status-closed';
+                default: return 'status-error';
+            }
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        function showError(message) {
+            const html = `
+                <div class="error-message">
+                    <strong>❌ Error:</strong> ${message}
+                </div>
+            `;
+            document.getElementById('results-container').innerHTML = html;
+        }
+        
+        // Load app info on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/info');
+                const info = await response.json();
+                console.log('App Info:', info);
+            } catch (error) {
+                console.error('Failed to load app info:', error);
+            }
+        });
+    </script>
+</body>
+</html>

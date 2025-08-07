@@ -1,0 +1,11 @@
+# Port Scanner Tool Dependencies
+
+# Core web framework
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# Optional dependencies for enhanced features:
+matplotlib>=3.0.0  # For real-time visualization charts (optional)
+
+# Note: The core scanner works with Python standard library only.
+# Web version requires Flask for HTTP server functionality.
